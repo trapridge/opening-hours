@@ -2,6 +2,9 @@
 
 import * as R from 'ramda';
 import React, { Component, type Element } from 'react';
+import Box from '../Box/Box';
+import List from '../List/List';
+import clockIcon from './clock.png';
 import OpeningHoursDay from '../OpeningHoursDay/OpeningHoursDay';
 
 export type Day =
@@ -31,7 +34,7 @@ type State = {
   ][]
 };
 
-const DAYS: Day[] = [
+export const DAYS: Day[] = [
   'monday',
   'tuesday',
   'wednesday',
@@ -45,23 +48,14 @@ export class OpeningHours extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.itemsByDay = this.itemsByDay.bind(this);
+    this.getDailyOpenings = this.getDailyOpenings.bind(this);
     this.state = {
       openingsAndClosings: this.parseOpeningsAndClosings()
     };
   }
 
-  itemsByDay: Day => *;
-  itemsByDay(day: Day): { ...OpeningHoursRecord, day?: Day }[] {
-    const { openingHours } = this.props;
-
-    return R.map(
-      entry => (entry.type === 'open' ? { ...entry, day } : entry),
-      openingHours[day]
-    );
-  }
-
   parseOpeningsAndClosings(): [
-    { ...OpeningHoursRecord, day: Day },
+    {| ...OpeningHoursRecord, day: Day |},
     OpeningHoursRecord
   ][] {
     const items = R.compose(
@@ -74,38 +68,52 @@ export class OpeningHours extends Component<Props, State> {
     );
   }
 
-  render(): Element<'div'> {
+  itemsByDay: Day => {| ...OpeningHoursRecord, day?: Day |}[];
+  itemsByDay(day: Day): {| ...OpeningHoursRecord, day?: Day |}[] {
+    const { openingHours } = this.props;
+
+    return R.map(
+      entry => (entry.type === 'open' ? { ...entry, day } : entry),
+      openingHours[day]
+    );
+  }
+
+  getDailyOpenings: Day => { open: number, close: number }[];
+  getDailyOpenings(day: Day): { open: number, close: number }[] {
     const { openingsAndClosings } = this.state;
 
+    return R.reduce(
+      (items, [open, close]) => {
+        if (open.day === day) {
+          return [
+            ...items,
+            {
+              open: open.value,
+              close: close.value
+            }
+          ];
+        }
+        return items;
+      },
+      [],
+      openingsAndClosings
+    );
+  }
+
+  render(): Element<typeof Box> {
     return (
-      <div>
-        <h3>Opening hours</h3>
-        <ul>
+      <Box header="Opening hours" icon={clockIcon}>
+        <List>
           {DAYS.map(day => (
             <li key={day}>
               <OpeningHoursDay
                 day={day}
-                dailyOpenings={R.reduce(
-                  (items, [open, close]) => {
-                    if (open.day === day) {
-                      return [
-                        ...items,
-                        {
-                          open: open.value,
-                          close: close.value
-                        }
-                      ];
-                    }
-                    return items;
-                  },
-                  [],
-                  openingsAndClosings
-                )}
+                dailyOpenings={this.getDailyOpenings(day)}
               />
             </li>
           ))}
-        </ul>
-      </div>
+        </List>
+      </Box>
     );
   }
 }

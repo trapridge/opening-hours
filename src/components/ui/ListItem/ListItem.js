@@ -5,7 +5,7 @@ import styles from './ListItem.module.scss';
 
 type Props = {
   key?: string,
-  children?: Element<any>
+  children?: Element<any> | string
 };
 
 export const ListItem = ({ children, key }: Props) => (

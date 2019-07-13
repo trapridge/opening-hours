@@ -29,7 +29,9 @@
     "pretty": "prettier --single-quote --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "lint": "eslint src/",
     "typedefs": "flow-typed install",
-    "sass-lint": "sass-lint -c .sass-lint.yml 'src/**/*.scss' -v -q"
+    "sass-lint": "sass-lint -c .sass-lint.yml 'src/**/*.scss' -v -q",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -57,5 +59,10 @@
       "git add"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@storybook/addon-knobs": "^5.1.9",
+    "@storybook/addon-links": "^5.1.9",
+    "@storybook/addons": "^5.1.9",
+    "@storybook/react": "^5.1.9"
+  }
 }

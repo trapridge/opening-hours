@@ -1,0 +1,24 @@
+// @flow strict
+
+import React from 'react';
+
+import { storiesOf } from '@storybook/react';
+import Box from './Box';
+import '../../../index.scss';
+
+storiesOf('Box', module)
+  .add('default', () => (
+    <Box header="Header">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua.
+    </Box>
+  ))
+  .add('with icon', () => (
+    <Box
+      header="Header"
+      icon="data:image/png;base64,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"
+    >
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua.
+    </Box>
+  ));

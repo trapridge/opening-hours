@@ -40,14 +40,28 @@ export class OpeningHours extends Component<Props, State> {
     };
   }
 
-  parseOpeningsAndClosings(): $PropertyType<State, 'openingsAndClosings'> {
-    // $FlowFixMe: unnesting typing bug
-    const items: {| ...OpeningHoursRecord, day?: Day |}[] = R.compose(
-      R.unnest,
-      R.map(this.itemsByDay)
-    )(DAYS);
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.data !== this.props.data) {
+      this.setState({ openingsAndClosings: this.parseOpeningsAndClosings() });
+    }
+  }
 
+  parseOpeningsAndClosings(): $PropertyType<State, 'openingsAndClosings'> {
+    let items: {| ...OpeningHoursRecord, day?: Day |}[];
+
+    try {
+      // $FlowFixMe
+      items = R.compose(
+        R.unnest,
+        R.map(this.itemsByDay)
+      )(DAYS);
+    } catch (e) {
+      return 'invalid';
+    }
+
+    // $FlowFixMe
     const openings = R.filter(R.propEq('type', 'open'), items);
+    // $FlowFixMe
     const closings = R.filter(R.propEq('type', 'close'), items);
 
     if (openings.length !== closings.length) {

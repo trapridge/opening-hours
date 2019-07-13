@@ -3,8 +3,8 @@
 import * as R from 'ramda';
 import React, { type Element, Fragment } from 'react';
 import classNames from 'classnames';
+import type { Day } from '../../helpers';
 import { getAmPmHours, isToday } from '../../helpers';
-import type { Day } from '../OpeningHours/OpeningHours';
 import styles from './OpeningHoursDay.module.scss';
 
 type Props = {

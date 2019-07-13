@@ -1,6 +1,13 @@
-// @flow
+// @flow strict
 
-import type { Day } from './components/OpeningHours/OpeningHours';
+export type Day =
+  | 'monday'
+  | 'tuesday'
+  | 'wednesday'
+  | 'thursday'
+  | 'friday'
+  | 'saturday'
+  | 'sunday';
 
 export const DAYS: Day[] = [
   'monday',

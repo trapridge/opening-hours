@@ -2,21 +2,13 @@
 
 import * as R from 'ramda';
 import React, { Component, type Element } from 'react';
+import type { Day } from '../../helpers';
 import { DAYS } from '../../helpers';
 import Box from '../ui/Box/Box';
 import List from '../ui/List/List';
 import ListItem from '../ui/ListItem/ListItem';
 import clockIcon from './clock.png';
 import OpeningHoursDay from '../OpeningHoursDay/OpeningHoursDay';
-
-export type Day =
-  | 'monday'
-  | 'tuesday'
-  | 'wednesday'
-  | 'thursday'
-  | 'friday'
-  | 'saturday'
-  | 'sunday';
 
 type OpeningHoursRecord = {|
   type: 'open' | 'close',

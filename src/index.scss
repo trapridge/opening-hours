@@ -1,4 +1,5 @@
 @import '~@csstools/normalize.css';
+@import './vars';
 
 @font-face {
   font-family: 'Circular Std Book';
@@ -13,14 +14,11 @@
 @font-face {
   font-family: 'Circular Std Medium';
   src: url(./fonts/CircularStd-Medium.otf) format('opentype');
-  //font-weight: bold;
-  //font-style: normal;
 }
 
 body {
+  @include font-body;
+  background-color: $color-bg;
   margin: 0;
-  font-family: 'Circular Std Medium', sans-serif;
-  color: #202125;
   padding: 30px;
-  background-color: #f8f8f8;
 }

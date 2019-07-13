@@ -27,7 +27,8 @@
     "flow": "flow",
     "pretty": "prettier --single-quote --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "lint": "eslint src/",
-    "typedefs": "flow-typed install"
+    "typedefs": "flow-typed install",
+    "sass-lint": "sass-lint -c .sass-lint.yml 'src/**/*.scss' -v -q"
   },
   "eslintConfig": {
     "extends": "react-app"

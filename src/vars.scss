@@ -1,0 +1,30 @@
+$color-text: rgba(32, 33, 37, 1);
+$color-bg: rgba(248, 248, 248, 1);
+$color-bg-widget: rgba(255, 255, 255, 1);
+$color-border: rgba(32, 33, 37, 0.08);
+$color-divider: rgba(32, 33, 37, 1);
+$color-highlight-green: rgba(87, 204, 70, 1);
+$color-disabled: rgba(32, 33, 37, 0.42);
+
+@mixin font-body {
+  color: $color-text;
+  font-family: 'Circular Std Medium', sans-serif;
+  font-size: 16px;
+  font-weight: lighter;
+  letter-spacing: 0.18px;
+}
+
+@mixin font-header {
+  font-family: 'Circular Std Medium', sans-serif;
+  font-size: 24px;
+  font-weight: normal;
+  letter-spacing: 0.2px;
+}
+
+@mixin font-tag {
+  color: $color-highlight-green;
+  font-family: 'Circular Std Bold', sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  text-transform: uppercase;
+}

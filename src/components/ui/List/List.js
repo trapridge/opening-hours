@@ -1,10 +1,11 @@
 // @flow strict
 
 import React, { type ChildrenArray, type Element } from 'react';
+import ListItem from '../ListItem/ListItem';
 import styles from './List.module.scss';
 
 type Props = {
-  children?: ChildrenArray<Element<'li'>>
+  children?: ChildrenArray<Element<typeof ListItem>>
 };
 
 export const List = ({ children }: Props) => (

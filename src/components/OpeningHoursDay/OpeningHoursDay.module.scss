@@ -1,32 +1,27 @@
+@import '../../vars';
+
 span {
   display: inline-block;
-  font-family: 'Circular Std Medium', sans-serif;
-  font-weight: lighter;
-  letter-spacing: 0.18px;
   width: 50%;
 }
 
 .day {
-  text-transform: capitalize;
   overflow: visible;
+  text-transform: capitalize;
   vertical-align: top;
 
   em {
-    font-family: 'Circular Std Bold', sans-serif;
-    color: rgba(87, 204, 70, 1);
-    font-size: 12px;
+    @include font-tag;
     margin-left: 8px;
-    font-style: normal;
-    text-transform: uppercase;
   }
 }
 
 .openings {
+  @include font-body;
   font-family: 'Circular Std Book', sans-serif;
   text-align: right;
-  font-weight: lighter;
 }
 
 .closed {
-  color: rgba(32, 33, 37, 0.42);
+  color: $color-disabled;
 }

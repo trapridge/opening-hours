@@ -1,0 +1,24 @@
+@import '../../../vars';
+
+.container {
+  background-color: $color-bg-widget;
+  border: 1px solid $color-border;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px 0 $color-border;
+  padding: 25px 30px 30px;
+  width: 267px;
+}
+
+.header {
+  @include font-header;
+
+  display: inline-block;
+  margin: 0 0 13px;
+  padding: 0 12px;
+}
+
+img {
+  height: 18px;
+  padding-left: 3px;
+  width: 18px;
+}

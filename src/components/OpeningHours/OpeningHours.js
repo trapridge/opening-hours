@@ -2,8 +2,9 @@
 
 import * as R from 'ramda';
 import React, { Component, type Element } from 'react';
-import Box from '../Box/Box';
-import List from '../List/List';
+import Box from '../ui/Box/Box';
+import List from '../ui/List/List';
+import ListItem from '../ui/ListItem/ListItem';
 import clockIcon from './clock.png';
 import OpeningHoursDay from '../OpeningHoursDay/OpeningHoursDay';
 
@@ -29,7 +30,7 @@ type Props = {
 
 type State = {
   openingsAndClosings: [
-    { ...OpeningHoursRecord, day: Day },
+    {| ...OpeningHoursRecord, day: Day |},
     OpeningHoursRecord
   ][]
 };
@@ -58,10 +59,12 @@ export class OpeningHours extends Component<Props, State> {
     {| ...OpeningHoursRecord, day: Day |},
     OpeningHoursRecord
   ][] {
-    const items = R.compose(
-      R.flatten,
+    // $FlowFixMe: unnesting type bug
+    const items: {| ...OpeningHoursRecord, day?: Day |}[] = R.compose(
+      R.unnest,
       R.map(this.itemsByDay)
     )(DAYS);
+
     return R.zip(
       R.filter(R.propEq('type', 'open'), items),
       R.filter(R.propEq('type', 'close'), items)
@@ -73,7 +76,10 @@ export class OpeningHours extends Component<Props, State> {
     const { openingHours } = this.props;
 
     return R.map(
-      entry => (entry.type === 'open' ? { ...entry, day } : entry),
+      record => ({
+        ...record,
+        ...(record.type === 'open' ? { day } : {})
+      }),
       openingHours[day]
     );
   }
@@ -105,12 +111,12 @@ export class OpeningHours extends Component<Props, State> {
       <Box header="Opening hours" icon={clockIcon}>
         <List>
           {DAYS.map(day => (
-            <li key={day}>
+            <ListItem key={day}>
               <OpeningHoursDay
                 day={day}
                 dailyOpenings={this.getDailyOpenings(day)}
               />
-            </li>
+            </ListItem>
           ))}
         </List>
       </Box>

@@ -2,6 +2,7 @@
 
 import * as R from 'ramda';
 import React, { Component, type Element } from 'react';
+import { DAYS } from '../../helpers';
 import Box from '../ui/Box/Box';
 import List from '../ui/List/List';
 import ListItem from '../ui/ListItem/ListItem';
@@ -22,28 +23,20 @@ type OpeningHoursRecord = {|
   value: number
 |};
 
-type OpeningHoursRecords = { [Day]: OpeningHoursRecord[] };
+export type OpeningHoursRecords = { [Day]: OpeningHoursRecord[] };
 
 type Props = {
-  openingHours: OpeningHoursRecords
+  data: OpeningHoursRecords
 };
+
+type OpeningAndClosing = [
+  {| ...OpeningHoursRecord, day: Day |},
+  OpeningHoursRecord
+];
 
 type State = {
-  openingsAndClosings: [
-    {| ...OpeningHoursRecord, day: Day |},
-    OpeningHoursRecord
-  ][]
+  openingsAndClosings: OpeningAndClosing[] | 'invalid'
 };
-
-export const DAYS: Day[] = [
-  'monday',
-  'tuesday',
-  'wednesday',
-  'thursday',
-  'friday',
-  'saturday',
-  'sunday'
-];
 
 export class OpeningHours extends Component<Props, State> {
   constructor(props: Props) {
@@ -55,70 +48,84 @@ export class OpeningHours extends Component<Props, State> {
     };
   }
 
-  parseOpeningsAndClosings(): [
-    {| ...OpeningHoursRecord, day: Day |},
-    OpeningHoursRecord
-  ][] {
-    // $FlowFixMe: unnesting type bug
+  parseOpeningsAndClosings(): $PropertyType<State, 'openingsAndClosings'> {
+    // $FlowFixMe: unnesting typing bug
     const items: {| ...OpeningHoursRecord, day?: Day |}[] = R.compose(
       R.unnest,
       R.map(this.itemsByDay)
     )(DAYS);
 
-    return R.zip(
-      R.filter(R.propEq('type', 'open'), items),
-      R.filter(R.propEq('type', 'close'), items)
-    );
+    const openings = R.filter(R.propEq('type', 'open'), items);
+    const closings = R.filter(R.propEq('type', 'close'), items);
+
+    if (openings.length !== closings.length) {
+      return 'invalid';
+    }
+
+    return R.zip(openings, closings);
   }
 
   itemsByDay: Day => {| ...OpeningHoursRecord, day?: Day |}[];
   itemsByDay(day: Day): {| ...OpeningHoursRecord, day?: Day |}[] {
-    const { openingHours } = this.props;
+    const { data } = this.props;
 
     return R.map(
       record => ({
         ...record,
         ...(record.type === 'open' ? { day } : {})
       }),
-      openingHours[day]
+      data[day]
     );
   }
 
-  getDailyOpenings: Day => { open: number, close: number }[];
-  getDailyOpenings(day: Day): { open: number, close: number }[] {
+  getDailyOpenings: Day => {| open: number, close: number |}[];
+  getDailyOpenings(day: Day): {| open: number, close: number |}[] {
     const { openingsAndClosings } = this.state;
 
-    return R.reduce(
-      (items, [open, close]) => {
-        if (open.day === day) {
-          return [
-            ...items,
-            {
-              open: open.value,
-              close: close.value
+    return openingsAndClosings !== 'invalid'
+      ? R.reduce(
+          (items, [open, close]) => {
+            if (open.day === day) {
+              return [
+                ...items,
+                {
+                  open: open.value,
+                  close: close.value
+                }
+              ];
             }
-          ];
-        }
-        return items;
-      },
-      [],
-      openingsAndClosings
-    );
+            return items;
+          },
+          [],
+          openingsAndClosings
+        )
+      : [];
   }
 
   render(): Element<typeof Box> {
+    const { openingsAndClosings } = this.state;
+
     return (
       <Box header="Opening hours" icon={clockIcon}>
-        <List>
-          {DAYS.map(day => (
-            <ListItem key={day}>
-              <OpeningHoursDay
-                day={day}
-                dailyOpenings={this.getDailyOpenings(day)}
-              />
+        {openingsAndClosings === 'invalid' && (
+          <List>
+            <ListItem key="invalid">
+              <span>Invalid data</span>
             </ListItem>
-          ))}
-        </List>
+          </List>
+        )}
+        {openingsAndClosings !== 'invalid' && (
+          <List>
+            {DAYS.map(day => (
+              <ListItem key={day}>
+                <OpeningHoursDay
+                  day={day}
+                  dailyOpenings={this.getDailyOpenings(day)}
+                />
+              </ListItem>
+            ))}
+          </List>
+        )}
       </Box>
     );
   }

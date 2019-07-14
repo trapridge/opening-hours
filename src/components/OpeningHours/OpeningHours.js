@@ -27,7 +27,7 @@ type OpeningAndClosing = [
 ];
 
 type State = {
-  openingsAndClosings: OpeningAndClosing[] | 'invalid'
+  openingsAndClosings: OpeningAndClosing[]
 };
 
 export class OpeningHours extends Component<Props, State> {
@@ -36,8 +36,12 @@ export class OpeningHours extends Component<Props, State> {
     this.itemsByDay = this.itemsByDay.bind(this);
     this.getDailyOpenings = this.getDailyOpenings.bind(this);
     this.state = {
-      openingsAndClosings: this.parseOpeningsAndClosings()
+      openingsAndClosings: []
     };
+  }
+
+  componentDidMount() {
+    this.setState({ openingsAndClosings: this.parseOpeningsAndClosings() });
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -47,25 +51,17 @@ export class OpeningHours extends Component<Props, State> {
   }
 
   parseOpeningsAndClosings(): $PropertyType<State, 'openingsAndClosings'> {
-    let items: {| ...OpeningHoursRecord, day?: Day |}[];
+    // $FlowFixMe: nested array type bug
+    const items: {| ...OpeningHoursRecord, day?: Day |}[] = R.compose(
+      R.unnest,
+      R.map(this.itemsByDay)
+    )(DAYS);
 
-    try {
-      // $FlowFixMe
-      items = R.compose(
-        R.unnest,
-        R.map(this.itemsByDay)
-      )(DAYS);
-    } catch (e) {
-      return 'invalid';
-    }
-
-    // $FlowFixMe
     const openings = R.filter(R.propEq('type', 'open'), items);
-    // $FlowFixMe
     const closings = R.filter(R.propEq('type', 'close'), items);
 
     if (openings.length !== closings.length) {
-      return 'invalid';
+      throw new Error();
     }
 
     return R.zip(openings, closings);
@@ -88,50 +84,37 @@ export class OpeningHours extends Component<Props, State> {
   getDailyOpenings(day: Day): {| open: number, close: number |}[] {
     const { openingsAndClosings } = this.state;
 
-    return openingsAndClosings !== 'invalid'
-      ? R.reduce(
-          (items, [open, close]) => {
-            if (open.day === day) {
-              return [
-                ...items,
-                {
-                  open: open.value,
-                  close: close.value
-                }
-              ];
+    return R.reduce(
+      (items, [open, close]) => {
+        if (open.day === day) {
+          return [
+            ...items,
+            {
+              open: open.value,
+              close: close.value
             }
-            return items;
-          },
-          [],
-          openingsAndClosings
-        )
-      : [];
+          ];
+        }
+        return items;
+      },
+      [],
+      openingsAndClosings
+    );
   }
 
   render(): Element<typeof Box> {
-    const { openingsAndClosings } = this.state;
-
     return (
       <Box header="Opening hours" icon={clockIcon}>
-        {openingsAndClosings === 'invalid' && (
-          <List>
-            <ListItem key="invalid">
-              <span>Invalid data</span>
+        <List>
+          {DAYS.map(day => (
+            <ListItem key={day}>
+              <OpeningHoursDay
+                day={day}
+                dailyOpenings={this.getDailyOpenings(day)}
+              />
             </ListItem>
-          </List>
-        )}
-        {openingsAndClosings !== 'invalid' && (
-          <List>
-            {DAYS.map(day => (
-              <ListItem key={day}>
-                <OpeningHoursDay
-                  day={day}
-                  dailyOpenings={this.getDailyOpenings(day)}
-                />
-              </ListItem>
-            ))}
-          </List>
-        )}
+          ))}
+        </List>
       </Box>
     );
   }

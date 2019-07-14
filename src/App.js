@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import React, { Component, type Element, Fragment } from 'react';
+import InvalidDataBoundary from './components/InvalidDataBoundary/InvalidDataBoundary';
 import type { OpeningHoursRecords } from './components/OpeningHours/OpeningHours';
 import OpeningHours from './components/OpeningHours/OpeningHours';
 
@@ -41,7 +42,9 @@ export class App extends Component<Props, State> {
         {loading && 'Loading opening hours'}
         {loadError && 'Cannot load opening hours'}
         {!loading && !loadError && openingHoursData && (
-          <OpeningHours data={openingHoursData} />
+          <InvalidDataBoundary>
+            <OpeningHours data={openingHoursData} />
+          </InvalidDataBoundary>
         )}
       </>
     );

@@ -4,12 +4,11 @@ import React, { type Element } from 'react';
 import styles from './ListItem.module.scss';
 
 type Props = {
-  key?: string,
   children?: Element<any> | string
 };
 
-export const ListItem = ({ children, key }: Props) => (
-  <li key={key} className={styles.item}>
+export const ListItem = ({ children, ...rest }: Props) => (
+  <li className={styles.item} {...rest}>
     {children}
   </li>
 );

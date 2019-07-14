@@ -29,7 +29,6 @@ export class InvalidDataBoundary extends Component<Props, State> {
   }
 
   render(): Element<typeof List> | Node {
-    // const { children } = this.props;
     const { hasError } = this.state;
 
     if (hasError) {

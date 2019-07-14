@@ -21,7 +21,8 @@
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
     "react-test-renderer": "^16.8.6",
-    "sass-lint": "^1.13.1"
+    "sass-lint": "^1.13.1",
+    "singlie": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

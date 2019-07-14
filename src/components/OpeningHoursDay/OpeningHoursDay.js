@@ -9,10 +9,10 @@ import styles from './OpeningHoursDay.module.scss';
 
 type Props = {
   day: Day,
-  dailyOpenings: {|
+  dailyOpenings: {
     open: number,
     close: number
-  |}[]
+  }[]
 };
 
 export const OpeningHoursDay = ({

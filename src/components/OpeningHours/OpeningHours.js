@@ -1,5 +1,6 @@
 // @flow strict
 
+import { Circular } from 'singlie';
 import * as R from 'ramda';
 import React, { Component, type Element } from 'react';
 import type { Day } from '../../helpers';
@@ -10,38 +11,27 @@ import ListItem from '../ui/ListItem/ListItem';
 import clockIcon from './clock.png';
 import OpeningHoursDay from '../OpeningHoursDay/OpeningHoursDay';
 
-type OpeningHoursRecord = {|
+type OpeningHoursRecord = {
   type: 'open' | 'close',
   value: number
-|};
+};
 
-export type OpeningHoursRecords = { [Day]: OpeningHoursRecord[] };
+export type OpeningHoursRecords = { [string]: OpeningHoursRecord[] };
 
 type Props = {
   data: OpeningHoursRecords
 };
 
-type OpeningAndClosing = [
-  {| ...OpeningHoursRecord, day: Day |},
-  OpeningHoursRecord
-];
-
 type State = {
-  openingsAndClosings: OpeningAndClosing[]
+  openingsAndClosings: typeof Circular
 };
 
 export class OpeningHours extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.itemsByDay = this.itemsByDay.bind(this);
-    this.getDailyOpenings = this.getDailyOpenings.bind(this);
     this.state = {
-      openingsAndClosings: []
+      openingsAndClosings: this.parseOpeningsAndClosings()
     };
-  }
-
-  componentDidMount() {
-    this.setState({ openingsAndClosings: this.parseOpeningsAndClosings() });
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -51,55 +41,39 @@ export class OpeningHours extends Component<Props, State> {
   }
 
   parseOpeningsAndClosings(): $PropertyType<State, 'openingsAndClosings'> {
-    // $FlowFixMe: nested array type bug
-    const items: {| ...OpeningHoursRecord, day?: Day |}[] = R.compose(
-      R.unnest,
-      R.map(this.itemsByDay)
-    )(DAYS);
+    const itemsByDay = day =>
+      R.map(
+        record => ({
+          ...record,
+          ...(record.type === 'open' ? { day } : {})
+        }),
+        this.props.data[day]
+      );
+    const items = R.chain(itemsByDay, DAYS);
+    return new Circular().append(...items);
+  }
 
-    const openings = R.filter(R.propEq('type', 'open'), items);
-    const closings = R.filter(R.propEq('type', 'close'), items);
+  getDailyOpenings: Day => { open: number, close: number }[];
+  getDailyOpenings(day: Day): { open: number, close: number }[] {
+    let { head: node, length } = this.state.openingsAndClosings;
+    let i = 0;
+    const values = [];
 
-    if (openings.length !== closings.length) {
-      throw new Error();
+    while (i < length) {
+      if (node.value.day === day) {
+        values.push({
+          open: node.value.value,
+          close: node.next.value.value
+        });
+        node = node.next.next;
+        i += 2;
+        continue;
+      }
+      node = node.next;
+      i++;
     }
 
-    return R.zip(openings, closings);
-  }
-
-  itemsByDay: Day => {| ...OpeningHoursRecord, day?: Day |}[];
-  itemsByDay(day: Day): {| ...OpeningHoursRecord, day?: Day |}[] {
-    const { data } = this.props;
-
-    return R.map(
-      record => ({
-        ...record,
-        ...(record.type === 'open' ? { day } : {})
-      }),
-      data[day]
-    );
-  }
-
-  getDailyOpenings: Day => {| open: number, close: number |}[];
-  getDailyOpenings(day: Day): {| open: number, close: number |}[] {
-    const { openingsAndClosings } = this.state;
-
-    return R.reduce(
-      (items, [open, close]) => {
-        if (open.day === day) {
-          return [
-            ...items,
-            {
-              open: open.value,
-              close: close.value
-            }
-          ];
-        }
-        return items;
-      },
-      [],
-      openingsAndClosings
-    );
+    return values;
   }
 
   render(): Element<typeof Box> {

@@ -1,8 +1,6 @@
 // @flow strict
 
 import React, { Component, type Element, type Node } from 'react';
-import clockIcon from '../OpeningHours/clock.png';
-import Box from '../ui/Box/Box';
 import List from '../ui/List/List';
 import ListItem from '../ui/ListItem/ListItem';
 
@@ -33,13 +31,11 @@ export class InvalidDataBoundary extends Component<Props, State> {
 
     if (hasError) {
       return (
-        <Box header="Opening hours" icon={clockIcon}>
-          <List>
-            <ListItem key="invalid">
-              <span>Invalid data</span>
-            </ListItem>
-          </List>
-        </Box>
+        <List>
+          <ListItem key="invalid">
+            <span>Invalid data</span>
+          </ListItem>
+        </List>
       );
     }
 

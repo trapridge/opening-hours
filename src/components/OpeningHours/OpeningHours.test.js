@@ -24,8 +24,32 @@ describe('OpeningHours', () => {
       );
     });
 
-    it('renders all days', () => {
-      expect(wrapper.find('OpeningHoursDay')).toHaveLength(7);
+    it('renders error boundary', () => {
+      expect(wrapper.find('InvalidDataBoundary')).toHaveLength(1);
     });
+
+    it('renders list', () => {
+      expect(wrapper.find('OpeningHoursList')).toHaveLength(1);
+    });
+
+    // beforeEach(() => {
+    //   wrapper = shallow(
+    //     <OpeningHours
+    //       data={{
+    //         monday: [],
+    //         tuesday: [],
+    //         wednesday: [],
+    //         thursday: [],
+    //         friday: [],
+    //         saturday: [],
+    //         sunday: []
+    //       }}
+    //     />
+    //   );
+    // });
+    //
+    // it('renders all days', () => {
+    //   expect(wrapper.find('OpeningHoursDay')).toHaveLength(7);
+    // });
   });
 });

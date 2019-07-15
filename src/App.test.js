@@ -1,11 +1,18 @@
 // @flow strict
 
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import React from 'react';
 import { shallow, type ShallowWrapper } from 'enzyme';
 import App from './App';
 
-describe('InvalidDataBoundary', () => {
+describe('App', () => {
   let wrapper: ShallowWrapper<typeof App>;
+  let mockAxios;
+
+  beforeEach(() => {
+    mockAxios = new MockAdapter(axios);
+  });
 
   describe('rendering', () => {
     describe('by default', () => {
@@ -94,6 +101,55 @@ describe('InvalidDataBoundary', () => {
 
       it('renders opening hours', () => {
         expect(wrapper.find('OpeningHours')).toHaveLength(1);
+      });
+    });
+  });
+
+  describe('lifecycle methods', () => {
+    describe('componentDidMount', () => {
+      describe('on load success', () => {
+        let data = ['data'];
+        let setStateSpy;
+
+        beforeEach(() => {
+          mockAxios.onGet('data.json').reply(200, data);
+          setStateSpy = jest.spyOn(App.prototype, 'setState');
+          wrapper = shallow(<App />);
+        });
+
+        it('call setState', () => {
+          expect(setStateSpy).toHaveBeenNthCalledWith(1, {
+            loading: true,
+            loadError: false
+          });
+          expect(setStateSpy).toHaveBeenNthCalledWith(2, {
+            loading: false,
+            openingHoursData: data
+          });
+        });
+      });
+
+      describe('on load failure', () => {
+        let setStateSpy;
+
+        beforeEach(async () => {
+          mockAxios.onGet('data.json').networkError();
+          setStateSpy = jest.spyOn(App.prototype, 'setState');
+          wrapper = shallow(<App />);
+          setStateSpy.mockClear();
+          await wrapper.instance().componentDidMount();
+        });
+
+        it('call setState', () => {
+          expect(setStateSpy).toHaveBeenNthCalledWith(1, {
+            loading: true,
+            loadError: false
+          });
+          expect(setStateSpy).toHaveBeenNthCalledWith(2, {
+            loading: false,
+            loadError: true
+          });
+        });
       });
     });
   });

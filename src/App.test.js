@@ -47,55 +47,55 @@ describe('App', () => {
             tuesday: [
               {
                 type: 'open',
-                value: 36000
+                value: 36000,
               },
               {
                 type: 'close',
-                value: 64800
-              }
+                value: 64800,
+              },
             ],
             wednesday: [],
             thursday: [
               {
                 type: 'open',
-                value: 36000
+                value: 36000,
               },
               {
                 type: 'close',
-                value: 64800
-              }
+                value: 64800,
+              },
             ],
             friday: [
               {
                 type: 'open',
-                value: 36000
-              }
+                value: 36000,
+              },
             ],
             saturday: [
               {
                 type: 'close',
-                value: 3600
+                value: 3600,
               },
               {
                 type: 'open',
-                value: 36000
-              }
+                value: 36000,
+              },
             ],
             sunday: [
               {
                 type: 'close',
-                value: 3600
+                value: 3600,
               },
               {
                 type: 'open',
-                value: 43200
+                value: 43200,
               },
               {
                 type: 'close',
-                value: 75600
-              }
-            ]
-          }
+                value: 75600,
+              },
+            ],
+          },
         });
       });
 
@@ -120,11 +120,11 @@ describe('App', () => {
         it('call setState', () => {
           expect(setStateSpy).toHaveBeenNthCalledWith(1, {
             loading: true,
-            loadError: false
+            loadError: false,
           });
           expect(setStateSpy).toHaveBeenNthCalledWith(2, {
             loading: false,
-            openingHoursData: data
+            openingHoursData: data,
           });
         });
       });
@@ -143,11 +143,11 @@ describe('App', () => {
         it('call setState', () => {
           expect(setStateSpy).toHaveBeenNthCalledWith(1, {
             loading: true,
-            loadError: false
+            loadError: false,
           });
           expect(setStateSpy).toHaveBeenNthCalledWith(2, {
             loading: false,
-            loadError: true
+            loadError: true,
           });
         });
       });

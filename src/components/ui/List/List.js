@@ -5,7 +5,7 @@ import ListItem from '../ListItem/ListItem';
 import styles from './List.module.scss';
 
 type Props = {
-  children?: ChildrenArray<Element<typeof ListItem>>
+  children?: ChildrenArray<Element<typeof ListItem>>,
 };
 
 export const List = ({ children }: Props) => (

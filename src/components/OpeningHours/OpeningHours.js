@@ -8,13 +8,13 @@ import clockIcon from './clock.png';
 
 type OpeningHoursRecord = {
   type: 'open' | 'close',
-  value: number
+  value: number,
 };
 
 export type OpeningHoursRecords = { [string]: OpeningHoursRecord[] };
 
 type Props = {
-  data: OpeningHoursRecords
+  data: OpeningHoursRecords,
 };
 
 export const OpeningHours = ({ data }: Props): Element<typeof Box> => (

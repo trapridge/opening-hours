@@ -11,13 +11,13 @@ type Props = {
   day: Day,
   dailyOpenings: {
     open: number,
-    close: number
-  }[]
+    close: number,
+  }[],
 };
 
 export const OpeningHoursDay = ({
   day,
-  dailyOpenings
+  dailyOpenings,
 }: Props): Element<typeof Fragment> => (
   <>
     <span className={styles.day}>
@@ -27,7 +27,7 @@ export const OpeningHoursDay = ({
     <span
       className={classNames({
         [styles.openings]: true,
-        [styles.closed]: dailyOpenings.length === 0
+        [styles.closed]: dailyOpenings.length === 0,
       })}
     >
       {dailyOpenings.length === 0

@@ -18,7 +18,7 @@ describe('OpeningHoursList', () => {
             thursday: [],
             friday: [],
             saturday: [],
-            sunday: []
+            sunday: [],
           }}
         />
       );
@@ -46,7 +46,7 @@ describe('OpeningHoursList', () => {
             thursday: [],
             friday: [],
             saturday: [],
-            sunday: []
+            sunday: [],
           }}
         />
       );
@@ -72,7 +72,7 @@ describe('OpeningHoursList', () => {
               thursday: [],
               friday: [],
               saturday: [],
-              sunday: []
+              sunday: [],
             }}
           />
         );
@@ -84,14 +84,14 @@ describe('OpeningHoursList', () => {
             thursday: [],
             friday: [],
             saturday: [],
-            sunday: []
-          }
+            sunday: [],
+          },
         });
       });
 
       it('setStateSpy is called', () => {
         expect(setStateSpy).toHaveBeenCalledWith({
-          openingsAndClosings: expect.anything()
+          openingsAndClosings: expect.anything(),
         });
       });
     });
@@ -109,54 +109,54 @@ describe('OpeningHoursList', () => {
               tuesday: [
                 {
                   type: 'open',
-                  value: 36000
+                  value: 36000,
                 },
                 {
                   type: 'close',
-                  value: 64800
-                }
+                  value: 64800,
+                },
               ],
               wednesday: [],
               thursday: [
                 {
                   type: 'open',
-                  value: 36000
+                  value: 36000,
                 },
                 {
                   type: 'close',
-                  value: 64800
-                }
+                  value: 64800,
+                },
               ],
               friday: [
                 {
                   type: 'open',
-                  value: 36000
-                }
+                  value: 36000,
+                },
               ],
               saturday: [
                 {
                   type: 'close',
-                  value: 3600
+                  value: 3600,
                 },
                 {
                   type: 'open',
-                  value: 36000
-                }
+                  value: 36000,
+                },
               ],
               sunday: [
                 {
                   type: 'close',
-                  value: 3600
+                  value: 3600,
                 },
                 {
                   type: 'open',
-                  value: 43200
+                  value: 43200,
                 },
                 {
                   type: 'close',
-                  value: 75600
-                }
-              ]
+                  value: 75600,
+                },
+              ],
             }}
           />
         );
@@ -169,48 +169,48 @@ describe('OpeningHoursList', () => {
           {
             type: 'open',
             value: 36000,
-            day: 'tuesday'
+            day: 'tuesday',
           },
           {
             type: 'close',
-            value: 64800
+            value: 64800,
           },
           {
             type: 'open',
             value: 36000,
-            day: 'thursday'
+            day: 'thursday',
           },
           {
             type: 'close',
-            value: 64800
+            value: 64800,
           },
           {
             type: 'open',
             value: 36000,
-            day: 'friday'
+            day: 'friday',
           },
           {
             type: 'close',
-            value: 3600
+            value: 3600,
           },
           {
             type: 'open',
             value: 36000,
-            day: 'saturday'
+            day: 'saturday',
           },
           {
             type: 'close',
-            value: 3600
+            value: 3600,
           },
           {
             type: 'open',
             value: 43200,
-            day: 'sunday'
+            day: 'sunday',
           },
           {
             type: 'close',
-            value: 75600
-          }
+            value: 75600,
+          },
         ]);
       });
     });
@@ -226,54 +226,54 @@ describe('OpeningHoursList', () => {
               tuesday: [
                 {
                   type: 'open',
-                  value: 36000
+                  value: 36000,
                 },
                 {
                   type: 'close',
-                  value: 64800
-                }
+                  value: 64800,
+                },
               ],
               wednesday: [],
               thursday: [
                 {
                   type: 'open',
-                  value: 36000
+                  value: 36000,
                 },
                 {
                   type: 'close',
-                  value: 64800
-                }
+                  value: 64800,
+                },
               ],
               friday: [
                 {
                   type: 'open',
-                  value: 36000
-                }
+                  value: 36000,
+                },
               ],
               saturday: [
                 {
                   type: 'close',
-                  value: 3600
+                  value: 3600,
                 },
                 {
                   type: 'open',
-                  value: 36000
-                }
+                  value: 36000,
+                },
               ],
               sunday: [
                 {
                   type: 'close',
-                  value: 3600
+                  value: 3600,
                 },
                 {
                   type: 'open',
-                  value: 43200
+                  value: 43200,
                 },
                 {
                   type: 'close',
-                  value: 75600
-                }
-              ]
+                  value: 75600,
+                },
+              ],
             }}
           />
         );
@@ -284,8 +284,8 @@ describe('OpeningHoursList', () => {
         expect(result).toEqual([
           {
             open: 36000,
-            close: 64800
-          }
+            close: 64800,
+          },
         ]);
       });
     });

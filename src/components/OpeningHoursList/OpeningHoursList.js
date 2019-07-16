@@ -11,18 +11,18 @@ import ListItem from '../ui/ListItem/ListItem';
 import OpeningHoursDay from '../OpeningHoursDay/OpeningHoursDay';
 
 type Props = {
-  data: OpeningHoursRecords
+  data: OpeningHoursRecords,
 };
 
 type State = {
-  openingsAndClosings: typeof Circular
+  openingsAndClosings: typeof Circular,
 };
 
 export class OpeningHoursList extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      openingsAndClosings: this.parseOpeningsAndClosings()
+      openingsAndClosings: this.parseOpeningsAndClosings(),
     };
   }
 
@@ -37,7 +37,7 @@ export class OpeningHoursList extends Component<Props, State> {
       R.map(
         record => ({
           ...record,
-          ...(record.type === 'open' ? { day } : {})
+          ...(record.type === 'open' ? { day } : {}),
         }),
         this.props.data[day]
       );
@@ -55,7 +55,7 @@ export class OpeningHoursList extends Component<Props, State> {
       if (node.value.day === day) {
         values.push({
           open: node.value.value,
-          close: node.next.value.value
+          close: node.next.value.value,
         });
         node = node.next.next;
         i += 2;

@@ -18,7 +18,7 @@ describe('OpeningHours', () => {
             thursday: [],
             friday: [],
             saturday: [],
-            sunday: []
+            sunday: [],
           }}
         />
       );

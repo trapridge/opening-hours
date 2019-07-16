@@ -5,24 +5,24 @@ import List from '../ui/List/List';
 import ListItem from '../ui/ListItem/ListItem';
 
 type Props = {
-  children: Node
+  children: Node,
 };
 
 type State = {
-  hasError: boolean
+  hasError: boolean,
 };
 
 export class InvalidDataBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      hasError: false
+      hasError: false,
     };
   }
 
   componentDidCatch() {
     this.setState({
-      hasError: true
+      hasError: true,
     });
   }
 

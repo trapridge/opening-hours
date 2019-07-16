@@ -10,7 +10,7 @@ type Props = {};
 type State = {
   openingHoursData: OpeningHoursRecords | void,
   loading: boolean,
-  loadError: boolean
+  loadError: boolean,
 };
 
 export class App extends Component<Props, State> {
@@ -19,7 +19,7 @@ export class App extends Component<Props, State> {
     this.state = {
       openingHoursData: undefined,
       loading: false,
-      loadError: false
+      loadError: false,
     };
   }
 

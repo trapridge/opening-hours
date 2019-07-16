@@ -16,7 +16,7 @@ export const DAYS: Day[] = [
   'thursday',
   'friday',
   'saturday',
-  'sunday'
+  'sunday',
 ];
 
 export const getAmPmHours = (unixTime: number): string => {
